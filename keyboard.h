@@ -1,6 +1,9 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 #include <QWidget>
+#include <QTimer>
+#include <QPalette>
+#include <QColor>
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -20,6 +23,9 @@ private:
     QLineEdit *m_display;
     enum {NUMBER = 10};
     Button *m_buttons[NUMBER];
+    QTimer *m_timer;
+    QColor m_color;
+    QPalette m_palette;
 };
 
 #endif // KEYBOARD_H
