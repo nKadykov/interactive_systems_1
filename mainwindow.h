@@ -3,12 +3,8 @@
 
 #include <QMainWindow>
 #include <QTimer>
-
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
+#include <QPushButton>
+#include <QTextBrowser>
 
 class MainWindow : public QMainWindow
 {
@@ -19,20 +15,18 @@ public:
     ~MainWindow();
 
 private slots:
-    void buttonOneClicked();
-    void buttonTwoClicked();
-    void buttonThreeClicked();
-    void buttonFourClicked();
-    void buttonFiveClicked();
-    void buttonSixClicked();
-    void buttonSevenClicked();
-    void buttonEightClicked();
-    void buttonNineClicked();
-    void buttonZeroClicked();
-private slots:
-    void timerHit();
+    void push_button_1_clicked();
+    void push_button_2_clicked();
+    void push_button_3_clicked();
+    void push_button_4_clicked();
+    void push_button_5_clicked();
+    void push_button_6_clicked();
+    void push_button_7_clicked();
+    void push_button_8_clicked();
+    void push_button_9_clicked();
+    void push_button_0_clicked();
+
 private:
-    Ui::MainWindow *ui;
     QTimer *timer;
 };
 #endif // MAINWINDOW_H

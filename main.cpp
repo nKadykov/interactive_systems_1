@@ -1,11 +1,11 @@
-#include "mainwindow.h"
+#include "keyboard.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    Keyboard k;
+    k.show();
     return a.exec();
 }
