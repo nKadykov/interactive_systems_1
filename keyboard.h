@@ -21,21 +21,33 @@ public:
 private slots:
     void clickButton();
     void changeColor(int index);
+    void changeColorSide(int index);
     void timeHit();
     void keyPressEvent(QKeyEvent *event);
+    void setMode();
 private:
+    enum class Mode {
+        FIRST,
+        SECOND,
+        THIRD,
+        FOURTH,
+        FIFTH
+    };
     template<typename PointerToMemberFunction1>
     Button *createButton(const QString&, const PointerToMemberFunction1&);
     QLineEdit *m_display;
-    enum {NUMBER = 10};
+    enum {NUMBER = 12};
     Button *m_buttons[NUMBER];
-    enum {NUMBER_SIDE = 10};
+    enum {NUMBER_SIDE = 17};
     Button *m_buttons_side[NUMBER_SIDE];
+    enum {NUMBER_MODE = 5};
+    Button *m_buttons_mode[NUMBER_MODE];
     QTimer *m_timer;
     QElapsedTimer *m_elapsed;
     QColor m_color;
     QPalette m_palette;
     bool m_is_changed = false;
+    Mode m_mode = Mode::FIRST;
 };
 
 #endif // KEYBOARD_H
