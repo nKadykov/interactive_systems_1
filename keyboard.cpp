@@ -263,6 +263,10 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
                 emit m_buttons[11]->clicked();
             m_is_changed = false;
             break;
+        case Qt::Key_NumLock:
+            emit m_buttons_side[10]->clicked();
+            m_is_changed = false;
+            break;
         case Qt::Key_Slash:
             emit m_buttons_side[11]->clicked();
             m_is_changed = false;
