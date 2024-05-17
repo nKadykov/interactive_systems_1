@@ -81,7 +81,6 @@ template<typename PointerToMemberFunction1>
 Button *Keyboard::createButton(const QString &text, const PointerToMemberFunction1 &member1) {
     Button *button = new Button(text);
     connect(button, &Button::clicked, this, member1);
-
     return button;
 }
 
@@ -106,11 +105,13 @@ void Keyboard::setMode() {
 
 void Keyboard::clickButton() {
     Button *clicked_button = qobject_cast<Button*>(sender());
+    m_color = clicked_button->palette().color(QPalette::Button);
     if(m_color == QColor(Qt::red)) {
         clicked_button->setStyleSheet("background-color: white");
         m_color = QColor(Qt::white);
         int e = m_elapsed->elapsed();
         m_display->setText(QString::number(e) + " ms");
+        m_is_changed = false;
     }
     m_elapsed->restart();
 }
@@ -148,7 +149,6 @@ void Keyboard::timeHit() {
                 index = 1;
                 changeColorSide(index);
                 m_is_changed = true;
-                index = 0;
                 break;
             case Mode::FOURTH:
                 index = rand() % NUMBER_SIDE;
@@ -176,58 +176,80 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
     int key = event->key();
     switch(key) {
         case Qt::Key_0:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_1:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_2:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_3:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_4:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_5:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_6:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_7:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_8:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_9:
-            emit m_buttons[key - Qt::Key_0]->clicked();
-            emit m_buttons_side[key - Qt::Key_0]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[key - Qt::Key_0]->clicked();
+            else
+                emit m_buttons[key - Qt::Key_0]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Minus:
-            emit m_buttons[10]->clicked();
-            emit m_buttons_side[13]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[13]->clicked();
+            else
+                emit m_buttons[10]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Equal:
@@ -235,8 +257,10 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_Plus:
-            emit m_buttons[11]->clicked();
-            emit m_buttons_side[14]->clicked();
+            if(event->modifiers() & Qt::KeypadModifier)
+                emit m_buttons_side[14]->clicked();
+            else
+                emit m_buttons[11]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Slash:
