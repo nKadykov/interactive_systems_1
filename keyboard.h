@@ -21,13 +21,14 @@ class Keyboard : public QWidget
     Q_OBJECT
 public:
     Keyboard(QWidget* parent = nullptr);
-private slots:
-    void clickButton();
+
+    void setMode();
     void changeColor(int index);
     void changeColorSide(int index);
+private slots:
+    void clickButton();
     void timeHit();
     void keyPressEvent(QKeyEvent *event);
-    void setMode();
 private:
     enum class Mode {
         FIRST = 0,
