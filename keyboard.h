@@ -1,12 +1,15 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 #include <QWidget>
+#include <QTime>
 #include <QTimer>
 #include <QPalette>
 #include <QColor>
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -27,7 +30,7 @@ private slots:
     void setMode();
 private:
     enum class Mode {
-        FIRST,
+        FIRST = 0,
         SECOND,
         THIRD,
         FOURTH,
@@ -48,6 +51,11 @@ private:
     QPalette m_palette;
     bool m_is_changed = false;
     Mode m_mode = Mode::FIRST;
+    QTableWidget* m_table;
+    QString m_result_string;
+    int index = 1;
+    int m_passed_time;
+
 };
 
 #endif // KEYBOARD_H

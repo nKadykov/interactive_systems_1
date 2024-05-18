@@ -5,6 +5,16 @@
 #include <QLineEdit>
 
 Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this)), m_elapsed(new QElapsedTimer()) {
+    m_table = new QTableWidget;
+    m_table->setRowCount(20);
+    m_table->setColumnCount(2);
+    QTableWidgetItem *item1 = new QTableWidgetItem;
+    item1->setText(QString("Mode"));
+    m_table->setItem(0, 0, item1);
+    QTableWidgetItem *item2 = new QTableWidgetItem;
+    item2->setText(QString("Time"));
+    m_table->setItem(0, 1, item2);
+
     m_timer->setInterval(1000);
     m_elapsed->start();
     QFont* font = new QFont;
@@ -50,9 +60,9 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
     }
 
     QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
+    // mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
     mainLayout->addWidget(m_display, 0, 0, 1, 11);
-    mainLayout->setSizeConstraint(QLayout::SetFixedSize);
+    // mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     for(int i = 1; i < 10; ++i) {
         mainLayout->addWidget(m_buttons[i], 1, i - 1, 1, 1);
     }
@@ -73,6 +83,7 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
     for(int i = 0; i < NUMBER_MODE; ++i) {
             mainLayout->addWidget(m_buttons_mode[i], 3, i, 1, 1);
     }
+    mainLayout->addWidget(m_table, 0, 14, 10, 1);
     setLayout(mainLayout);
     m_timer->start();
 }
@@ -110,8 +121,20 @@ void Keyboard::clickButton() {
         clicked_button->setStyleSheet("background-color: white");
         m_color = QColor(Qt::white);
         int e = m_elapsed->elapsed();
+        m_result_string += (QString::number(e) + "\n");
         m_display->setText(QString::number(e) + " ms");
         m_is_changed = false;
+
+        if(index > 20) {
+            m_table->resize(index, 3);
+        }
+        QTableWidgetItem* item1 = new QTableWidgetItem;
+        item1->setText(QString::number(static_cast<int>(m_mode) + 1));
+        m_table->setItem(index, 0, item1);
+        QTableWidgetItem* item2 = new QTableWidgetItem;
+        item2->setText(QString::number(e / 1000) + "." + QString::number(e % 1000));
+        m_table->setItem(index, 1, item2);
+        index++;
     }
     m_elapsed->restart();
 }
