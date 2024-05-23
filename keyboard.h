@@ -42,9 +42,9 @@ private:
     template<typename PointerToMemberFunction1>
     Button *createButton(const QString&, const PointerToMemberFunction1&);
     QLineEdit *m_display;
-    enum {NUMBER = 12};
+    enum {NUMBER = 10};
     Button *m_buttons[NUMBER];
-    enum {NUMBER_SIDE = 17};
+    enum {NUMBER_SIDE = 10};
     Button *m_buttons_side[NUMBER_SIDE];
     enum {NUMBER_MODE = 5};
     Button *m_buttons_mode[NUMBER_MODE];

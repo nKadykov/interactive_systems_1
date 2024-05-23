@@ -33,28 +33,10 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
         m_buttons[i] = createButton(QString::number(i), &Keyboard::clickButton);
         m_buttons[i]->setStyleSheet("background-color: white");
     }
-    m_buttons[10] = createButton(tr("-"), &Keyboard::clickButton);
-    m_buttons[10]->setStyleSheet("background-color: white");
-    m_buttons[11] = createButton(tr("+"), &Keyboard::clickButton);
-    m_buttons[11]->setStyleSheet("background-color: white");
     for(int i = 0; i < 10; ++i) {
         m_buttons_side[i] = createButton(QString::number(i), &Keyboard::clickButton);
         m_buttons_side[i]->setStyleSheet("background-color: white");
     }
-    m_buttons_side[10] = createButton(tr("Num\nLock"), &Keyboard::clickButton);
-    m_buttons_side[10]->setStyleSheet("background-color: white");
-    m_buttons_side[11] = createButton(tr("/"), &Keyboard::clickButton);
-    m_buttons_side[11]->setStyleSheet("background-color: white");
-    m_buttons_side[12] = createButton(tr("*"), &Keyboard::clickButton);
-    m_buttons_side[12]->setStyleSheet("background-color: white");
-    m_buttons_side[13] = createButton(tr("-"), &Keyboard::clickButton);
-    m_buttons_side[13]->setStyleSheet("background-color: white");
-    m_buttons_side[14] = createButton(tr("+"), &Keyboard::clickButton);
-    m_buttons_side[14]->setStyleSheet("background-color: white");
-    m_buttons_side[15] = createButton(tr("Enter"), &Keyboard::clickButton);
-    m_buttons_side[15]->setStyleSheet("background-color: white");
-    m_buttons_side[16] = createButton(tr("."), &Keyboard::clickButton);
-    m_buttons_side[16]->setStyleSheet("background-color: white");
     for(int i = 0; i < NUMBER_MODE; ++i) {
         m_buttons_mode[i] = createButton(tr("MODE: ") + QString::number(i + 1), &Keyboard::setMode);
         m_buttons_mode[i]->setStyleSheet("background-color: white");
@@ -66,19 +48,10 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
         mainLayout->addWidget(m_buttons[i], 1, i - 1, 1, 1);
     }
     mainLayout->addWidget(m_buttons[0], 1, 10, 1, 1);
-    mainLayout->addWidget(m_buttons[10], 1, 11, 1, 1);
-    mainLayout->addWidget(m_buttons[11], 1, 12, 1, 1);
     for(int i = 1; i < 10; ++i) {
         mainLayout->addWidget(m_buttons_side[i], 5 - ((i - 1) / 3), 10 + ((i - 1) % 3));
     }
     mainLayout->addWidget(m_buttons_side[0], 6, 10, 1, 2);
-    mainLayout->addWidget(m_buttons_side[10], 2, 10, 1, 1);
-    mainLayout->addWidget(m_buttons_side[11], 2, 11, 1, 1);
-    mainLayout->addWidget(m_buttons_side[12], 2, 12, 1, 1);
-    mainLayout->addWidget(m_buttons_side[13], 2, 13, 1, 1);
-    mainLayout->addWidget(m_buttons_side[14], 3, 13, 2, 1);
-    mainLayout->addWidget(m_buttons_side[15], 5, 13, 2, 1);
-    mainLayout->addWidget(m_buttons_side[16], 6, 12, 1, 1);
     for(int i = 0; i < NUMBER_MODE; ++i) {
         mainLayout->addWidget(m_buttons_mode[i], 3, i, 1, 1);
     }
@@ -294,43 +267,25 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             emit m_buttons[key - Qt::Key_0]->clicked();
         m_is_changed = false;
         break;
-    case Qt::Key_Minus:
-        if(event->modifiers() & Qt::KeypadModifier)
-            emit m_buttons_side[13]->clicked();
-        else
-            emit m_buttons[10]->clicked();
-        m_is_changed = false;
+    case Qt::Key_C:
+        resetTable();
+        m_mode = Mode::FIRST;
         break;
-    case Qt::Key_Equal:
-        emit m_buttons[11]->clicked();
-        m_is_changed = false;
+    case Qt::Key_V:
+        resetTable();
+        m_mode = Mode::SECOND;
         break;
-    case Qt::Key_Plus:
-        if(event->modifiers() & Qt::KeypadModifier)
-            emit m_buttons_side[14]->clicked();
-        else
-            emit m_buttons[11]->clicked();
-        m_is_changed = false;
+    case Qt::Key_B:
+        resetTable();
+        m_mode = Mode::THIRD;
         break;
-    case Qt::Key_NumLock:
-        emit m_buttons_side[10]->clicked();
-        m_is_changed = false;
+    case Qt::Key_N:
+        resetTable();
+        m_mode = Mode::FOURTH;
         break;
-    case Qt::Key_Slash:
-        emit m_buttons_side[11]->clicked();
-        m_is_changed = false;
-        break;
-    case Qt::Key_Asterisk:
-        emit m_buttons_side[12]->clicked();
-        m_is_changed = false;
-        break;
-    case Qt::Key_Enter:
-        emit m_buttons_side[15]->clicked();
-        m_is_changed = false;
-        break;
-    case Qt::Key_Period:
-        emit m_buttons_side[16]->clicked();
-        m_is_changed = false;
+    case Qt::Key_M:
+        resetTable();
+        m_mode = Mode::FIFTH;
         break;
     }
 }
