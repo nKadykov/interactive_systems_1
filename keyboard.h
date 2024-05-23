@@ -25,6 +25,8 @@ public:
     void setMode();
     void changeColor(int index);
     void changeColorSide(int index);
+    void showMessage();
+    void resetTable();
 private slots:
     void clickButton();
     void timeHit();
@@ -56,7 +58,6 @@ private:
     QString m_result_string;
     int index = 1;
     int m_passed_time;
-
 };
 
 #endif // KEYBOARD_H
