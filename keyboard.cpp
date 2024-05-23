@@ -3,6 +3,7 @@
 
 #include <QGridLayout>
 #include <QLineEdit>
+#include <QMessageBox>
 
 Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this)), m_elapsed(new QElapsedTimer()) {
     m_table = new QTableWidget;
@@ -22,10 +23,10 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
     m_display = new QLineEdit("0 ms");
     m_display->setReadOnly(true);
     m_display->setAlignment(Qt::AlignRight);
-    m_display->setMinimumSize(10, 100);
+    m_display->setMinimumSize(500, 50);
     m_display->setFont(*font);
     m_color = QColor(Qt::white);
-    m_palette.setColor(QPalette::Button, QColor(Qt::blue));
+    m_palette.setColor(QPalette::Button, QColor(Qt::green));
     connect(m_timer, &QTimer::timeout, this, &Keyboard::timeHit);
 
     for(int i = 0; i < NUMBER; ++i) {
@@ -60,9 +61,7 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
     }
 
     QGridLayout *mainLayout = new QGridLayout;
-    // mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
     mainLayout->addWidget(m_display, 0, 0, 1, 11);
-    // mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     for(int i = 1; i < 10; ++i) {
         mainLayout->addWidget(m_buttons[i], 1, i - 1, 1, 1);
     }
@@ -85,6 +84,7 @@ Keyboard::Keyboard(QWidget* parent) : QWidget(parent), m_timer(new QTimer(this))
     }
     mainLayout->addWidget(m_table, 0, 14, 10, 1);
     setLayout(mainLayout);
+    setMinimumSize(1280, 500);
     m_timer->start();
 }
 
@@ -98,18 +98,58 @@ Button *Keyboard::createButton(const QString &text, const PointerToMemberFunctio
 void Keyboard::setMode() {
     Button *clicked_button = qobject_cast<Button*>(sender());
     if(clicked_button == m_buttons_mode[0]) {
+        m_table->clear();
+        QTableWidgetItem *item1 = new QTableWidgetItem;
+        item1->setText(QString("Mode"));
+        m_table->setItem(0, 0, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem;
+        item2->setText(QString("Time"));
+        m_table->setItem(0, 1, item2);
+        index = 1;
         m_mode = Mode::FIRST;
     }
     if(clicked_button == m_buttons_mode[1]) {
+        m_table->clear();
+        QTableWidgetItem *item1 = new QTableWidgetItem;
+        item1->setText(QString("Mode"));
+        m_table->setItem(0, 0, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem;
+        item2->setText(QString("Time"));
+        m_table->setItem(0, 1, item2);
+        index = 1;
         m_mode = Mode::SECOND;
     }
     if(clicked_button == m_buttons_mode[2]) {
+        m_table->clear();
+        QTableWidgetItem *item1 = new QTableWidgetItem;
+        item1->setText(QString("Mode"));
+        m_table->setItem(0, 0, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem;
+        item2->setText(QString("Time"));
+        m_table->setItem(0, 1, item2);
+        index = 1;
         m_mode = Mode::THIRD;
     }
     if(clicked_button == m_buttons_mode[3]) {
+        m_table->clear();
+        QTableWidgetItem *item1 = new QTableWidgetItem;
+        item1->setText(QString("Mode"));
+        m_table->setItem(0, 0, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem;
+        item2->setText(QString("Time"));
+        m_table->setItem(0, 1, item2);
+        index = 1;
         m_mode = Mode::FOURTH;
     }
     if(clicked_button == m_buttons_mode[4]) {
+        m_table->clear();
+        QTableWidgetItem *item1 = new QTableWidgetItem;
+        item1->setText(QString("Mode"));
+        m_table->setItem(0, 0, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem;
+        item2->setText(QString("Time"));
+        m_table->setItem(0, 1, item2);
+        index = 1;
         m_mode = Mode::FIFTH;
     }
 }
@@ -117,7 +157,7 @@ void Keyboard::setMode() {
 void Keyboard::clickButton() {
     Button *clicked_button = qobject_cast<Button*>(sender());
     m_color = clicked_button->palette().color(QPalette::Button);
-    if(m_color == QColor(Qt::red)) {
+    if(m_color == QColor(Qt::yellow)) {
         clicked_button->setStyleSheet("background-color: white");
         m_color = QColor(Qt::white);
         int e = m_elapsed->elapsed();
@@ -140,13 +180,13 @@ void Keyboard::clickButton() {
 }
 
 void Keyboard::changeColor(int index) {
-    m_buttons[index]->setStyleSheet("background-color: red");
+    m_buttons[index]->setStyleSheet("background-color: yellow");
     m_is_changed = true;
     m_elapsed->restart();
 }
 
 void Keyboard::changeColorSide(int index) {
-    m_buttons_side[index]->setStyleSheet("background-color: red");
+    m_buttons_side[index]->setStyleSheet("background-color: yellow");
     m_is_changed = true;
     m_elapsed->restart();
 }
@@ -190,6 +230,7 @@ void Keyboard::timeHit() {
                     changeColorSide(index);
                     m_is_changed = true;
                 }
+                m_is_changed = true;
                 break;
         }
     }
@@ -199,6 +240,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
     int key = event->key();
     switch(key) {
         case Qt::Key_0:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -213,6 +259,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_2:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -220,6 +271,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_3:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -227,6 +283,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_4:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -234,6 +295,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_5:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -241,6 +307,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_6:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -248,6 +319,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_7:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -255,6 +331,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_8:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -262,6 +343,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_9:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[key - Qt::Key_0]->clicked();
             else
@@ -269,6 +355,11 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_Minus:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[13]->clicked();
             else
@@ -276,10 +367,20 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_Equal:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             emit m_buttons[11]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Plus:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             if(event->modifiers() & Qt::KeypadModifier)
                 emit m_buttons_side[14]->clicked();
             else
@@ -287,22 +388,47 @@ void Keyboard::keyPressEvent(QKeyEvent* event) {
             m_is_changed = false;
             break;
         case Qt::Key_NumLock:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             emit m_buttons_side[10]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Slash:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             emit m_buttons_side[11]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Asterisk:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             emit m_buttons_side[12]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Enter:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             emit m_buttons_side[15]->clicked();
             m_is_changed = false;
             break;
         case Qt::Key_Period:
+            if(m_mode == Mode::FIRST) {
+                QMessageBox message_box;
+                message_box.setText("Wrong button");
+                message_box.exec();
+            }
             emit m_buttons_side[16]->clicked();
             m_is_changed = false;
             break;
